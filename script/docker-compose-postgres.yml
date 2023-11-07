@@ -1,0 +1,25 @@
+version: '3.5'
+
+services: 
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB_NAME: postgres
+      POSTGRES_SCHEMA: pismo
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+    ports:
+      - 5432:5432
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
