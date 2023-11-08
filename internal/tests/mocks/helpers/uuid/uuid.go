@@ -1,4 +1,4 @@
-package mocks
+package uuidmocks
 
 import "github.com/stretchr/testify/mock"
 

@@ -1,4 +1,4 @@
-package mocks
+package accountmocks
 
 import (
 	"dmorsoleto/internal/entity"
