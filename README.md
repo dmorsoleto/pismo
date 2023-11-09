@@ -1,10 +1,8 @@
-# PISMO TEST #
+# PISMO TEST
 
 Project developed for a test to PISMO company.
 
-### PROJECT STRUCTUTE ###
-
-### RUN PROJECT ###
+### RUN PROJECT
 
 To run project will be necessary the following libs:
 
@@ -12,3 +10,8 @@ To run project will be necessary the following libs:
 * [golang 1.19](https://go.dev)
 
 - Run ```make run``` to run local project
+
+- Local api service up run ```make local-api```
+
+### PROJECT STRUCTUTE
+
