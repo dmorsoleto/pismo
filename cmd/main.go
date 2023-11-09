@@ -12,6 +12,8 @@ import (
 	"dmorsoleto/internal/usecase/accounts"
 	"dmorsoleto/internal/usecase/transactions"
 	"os"
+
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -45,7 +47,8 @@ func main() {
 	databaseHelper := database.NewDatabseHelper()
 	_, errConnDB := databaseHelper.InitConnection(databaseSettings)
 	if errConnDB != nil {
-		panic(errConnDB)
+		logrus.Fatalf("Error connecting to database: %v", errConnDB)
+		return
 	}
 
 	uuidHelper := uuid.NewUuidHelper()

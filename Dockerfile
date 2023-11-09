@@ -1,23 +1,29 @@
-FROM golang:1-19-alpine AS builder
+FROM golang:1.19-alpine AS builder
 
-RUN apk update && apk add --no-cache git && apk add amke
+RUN apk update && apk add --no-cache git && apk add make
 
-WORKDIR /app
+COPY . /src
 
-COPY . .
+RUN export GOPATH= && \
+    cd /src && \
+    go mod tidy && \
+    go build -o /dist/main cmd/main.go
 
-RUN make build
+ADD script /dist/script
 
 FROM alpine:latest
 
 RUN apk update && apk add --no-cache
 
-WORKDIR /app
+COPY --from=builder /dist /dist
+COPY ./bin ./dist
 
-COPY --from=builder /app/bin/ .
+RUN chmod +x ./dist/wait-for-it
+
+WORKDIR /dist
 
 ENV PORT=3000
 
-CMD ["/app/bin"]
+CMD ["/dist/main"]
 
 EXPOSE 3000

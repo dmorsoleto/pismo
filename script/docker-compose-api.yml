@@ -16,6 +16,22 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+
+  app:
+    build: ./../.
+    environment:
+      - POSTGRES_HOST=composepostgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB_NAME=postgres
+      - POSTGRES_SCHEMA=pismo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PWD=postgres
+    ports:
+      - 3000:3000
+    networks:
+      - postgres
+    depends_on:
+      - postgres
   
 networks:
   postgres:

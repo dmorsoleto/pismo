@@ -4,12 +4,9 @@ export
 
 
 run: postgres-up
+	./bin/wait-for-it
 	@echo "Running the application"
 	@go run ./cmd/main.go
-
-build:
-	@echo "Building the application"
-	@go build -o ./dist/main ./cmd/main.go
 
 postgres-up:
 	@echo "Starting postgres container"
@@ -18,3 +15,7 @@ postgres-up:
 postgres-down:
 	@echo "Stopping postgres container"
 	@docker-compose -f ./script/docker-compose-postgres.yml down -v --remove-orphans
+
+local-api:
+	@echo "Starting local api"
+	@docker-compose -f ./script/docker-compose-api.yml up -d --force-recreate
