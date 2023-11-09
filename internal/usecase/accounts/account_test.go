@@ -60,24 +60,26 @@ func (ref *AccountsUseCaseTestSuite) TestGet_Invalid_UUID_Error() {
 func (ref *AccountsUseCaseTestSuite) TestAdd_Success() {
 	newAccount := newAddAccount()
 
-	ref.accountsRepository.On("Add", newAccount).Return(nil)
+	ref.accountsRepository.On("Add", newAccount).Return("123", nil)
 
-	err := ref.accountUseCase.Add(newAccount)
+	lastId, err := ref.accountUseCase.Add(newAccount)
 
 	ref.NoError(err)
+	ref.NotEmpty(lastId)
 }
 
 func (ref *AccountsUseCaseTestSuite) TestAdd_Empty_Error() {
 	newAccount := accounts.AddAccount{}
 
-	ref.accountsRepository.On("Add", newAccount).Return(nil)
+	ref.accountsRepository.On("Add", newAccount).Return("123", nil)
 
-	err := ref.accountUseCase.Add(newAccount)
+	lastId, err := ref.accountUseCase.Add(newAccount)
 
 	expectedError := errors.New("account is empty")
 
 	ref.Error(err)
 	ref.Equal(err, expectedError)
+	ref.Empty(lastId)
 }
 
 func newAccountEntity() entity.Account {

@@ -61,7 +61,20 @@ func (ref *accountsHandler) AddAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ref.accountsUseCase.Add(account)
+	idInserted, err := ref.accountsUseCase.Add(account)
+	if err != nil {
+		logrus.Error("Something went wrong!", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	response := ResponseAddccountData{
+		Sucess:    1,
+		Message:   "Account created with success",
+		AccountId: idInserted,
+	}
+
+	responseJson, err := json.Marshal(response)
 	if err != nil {
 		logrus.Error("Something went wrong!", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -69,4 +82,5 @@ func (ref *accountsHandler) AddAccount(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
+	w.Write(responseJson)
 }

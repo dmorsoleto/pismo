@@ -26,9 +26,9 @@ func (ref *accountsUseCase) Get(id string) (entity.Account, error) {
 	return ref.accountsRepository.Get(id)
 }
 
-func (ref *accountsUseCase) Add(account accounts.AddAccount) error {
+func (ref *accountsUseCase) Add(account accounts.AddAccount) (string, error) {
 	if account == (accounts.AddAccount{}) {
-		return errors.New("account is empty")
+		return "", errors.New("account is empty")
 	}
 	return ref.accountsRepository.Add(account)
 }

@@ -11,7 +11,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"github.com/stretchr/testify/suite"
+)
+
+const (
+	id = "cb1fd9fa-6d15-4a5d-8543-ae1ac1fbd563"
 )
 
 var (
@@ -35,16 +40,17 @@ func TestAccountsHandlerTestSuite(t *testing.T) {
 }
 
 func (ref *AccountsHandlerTestSuite) TestGetAccount_Sucess() {
-	req, err := http.NewRequest("GET", "/account?accountId=1", nil)
-	if err != nil {
-		ref.T().Fatal(err)
-	}
+	req, err := http.NewRequest("GET", "/accounts/123", nil)
+	ref.NoError(err)
+
+	vars := map[string]string{"accountId": "123"}
+	req = mux.SetURLVars(req, vars)
 
 	w := httptest.NewRecorder()
 
 	expectedAccount := newAccountEntity()
 
-	ref.accountsUseCase.On("Get", "1").Return(expectedAccount, nil)
+	ref.accountsUseCase.On("Get", "123").Return(expectedAccount, nil)
 
 	ref.accountsHandler.GetAccount(w, req)
 
@@ -61,14 +67,15 @@ func (ref *AccountsHandlerTestSuite) TestGetAccount_Sucess() {
 }
 
 func (ref *AccountsHandlerTestSuite) TestGetAccount_UseCase_Error() {
-	req, err := http.NewRequest("GET", "/account?accountId=1", nil)
-	if err != nil {
-		ref.T().Fatal(err)
-	}
+	req, err := http.NewRequest("GET", "/account/123", nil)
+	ref.NoError(err)
+
+	vars := map[string]string{"accountId": "123"}
+	req = mux.SetURLVars(req, vars)
 
 	w := httptest.NewRecorder()
 
-	ref.accountsUseCase.On("Get", "1").Return(entity.Account{}, errFoo)
+	ref.accountsUseCase.On("Get", "123").Return(entity.Account{}, errFoo)
 
 	ref.accountsHandler.GetAccount(w, req)
 
@@ -96,7 +103,7 @@ func (ref *AccountsHandlerTestSuite) TestAddAccount_Success() {
 
 	w := httptest.NewRecorder()
 
-	ref.accountsUseCase.On("Add", newAccount).Return(nil)
+	ref.accountsUseCase.On("Add", newAccount).Return(id, nil)
 
 	ref.accountsHandler.AddAccount(w, req)
 
@@ -124,7 +131,7 @@ func (ref *AccountsHandlerTestSuite) TestAddAccount_UseCase_Error() {
 
 	w := httptest.NewRecorder()
 
-	ref.accountsUseCase.On("Add", newAccount).Return(errFoo)
+	ref.accountsUseCase.On("Add", newAccount).Return(id, errFoo)
 
 	ref.accountsHandler.AddAccount(w, req)
 

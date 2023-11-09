@@ -16,7 +16,7 @@ func (ref *AccountsRepositoryMock) Get(id string) (entity.Account, error) {
 	return args.Get(0).(entity.Account), args.Error(1)
 }
 
-func (ref *AccountsRepositoryMock) Add(account accounts.AddAccount) error {
+func (ref *AccountsRepositoryMock) Add(account accounts.AddAccount) (string, error) {
 	args := ref.Called(account)
-	return args.Error(0)
+	return args.Get(0).(string), args.Error(1)
 }

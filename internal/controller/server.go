@@ -1,14 +1,16 @@
 package controller
 
 import (
-	"dmorsoleto/internal/controller/handlers"
+	handlers_accounts "dmorsoleto/internal/controller/handlers/accounts"
+	handlers_transactions "dmorsoleto/internal/controller/handlers/transactions"
+
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-func RunHttp(accountsHandler handlers.AccountsHandler, transactionsHandler handlers.TransactionsHandler) {
+func RunHttp(accountsHandler handlers_accounts.AccountsHandler, transactionsHandler handlers_transactions.TransactionsHandler) {
 	router := mux.NewRouter()
 	router.HandleFunc("/accounts", accountsHandler.AddAccount).Methods("POST")
 	router.HandleFunc("/accounts/{accountId}", accountsHandler.GetAccount).Methods("GET")

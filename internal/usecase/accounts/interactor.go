@@ -7,5 +7,5 @@ import (
 
 type AccountsUseCase interface {
 	Get(id string) (entity.Account, error)
-	Add(account accounts.AddAccount) error
+	Add(account accounts.AddAccount) (string, error)
 }
