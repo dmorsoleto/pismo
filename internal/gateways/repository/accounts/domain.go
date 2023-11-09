@@ -1,5 +1,5 @@
 package accounts
 
 type AddAccount struct {
-	DocumentNumber string `db:"document_number"`
+	DocumentNumber string `json:"document_number" db:"document_number"`
 }

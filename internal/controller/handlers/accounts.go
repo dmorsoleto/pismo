@@ -6,6 +6,9 @@ import (
 	"net/http"
 
 	accounts_repo "dmorsoleto/internal/gateways/repository/accounts"
+
+	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 type AccountsHandler interface {
@@ -28,16 +31,19 @@ type ResponseData struct {
 }
 
 func (ref *accountsHandler) GetAccount(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("accountId")
+	vars := mux.Vars(r)
+	id := vars["accountId"]
 
 	account, err := ref.accountsUseCase.Get(id)
 	if err != nil {
+		logrus.Error("Something went wrong!", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	jsonBytes, err := json.Marshal(account)
 	if err != nil {
+		logrus.Error("Something went wrong!", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -57,6 +63,7 @@ func (ref *accountsHandler) AddAccount(w http.ResponseWriter, r *http.Request) {
 
 	err = ref.accountsUseCase.Add(account)
 	if err != nil {
+		logrus.Error("Something went wrong!", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

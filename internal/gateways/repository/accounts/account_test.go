@@ -13,7 +13,7 @@ import (
 
 const (
 	expextedSelectAccountByID = `SELECT \* FROM accounts WHERE account_ID = \$1`
-	expextedInsertAccount     = `INSERT INTO accounts \(document_number\) VALUES \(\?\)`
+	expextedInsertAccount     = `INSERT INTO pismo\.accounts \(document_number\) VALUES \(\?\)`
 )
 
 var (

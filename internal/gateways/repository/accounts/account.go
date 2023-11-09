@@ -2,21 +2,27 @@ package accounts
 
 import (
 	"dmorsoleto/internal/entity"
+	"dmorsoleto/internal/helpers/database"
+	"dmorsoleto/internal/helpers/uuid"
 
 	"github.com/jmoiron/sqlx"
 )
 
 const (
-	selectAccountByID = "SELECT * FROM accounts WHERE account_ID = $1"
-	insertAccount     = "INSERT INTO accounts (document_number) VALUES (:document_number)"
+	selectAccountByID = "SELECT * FROM pismo.accounts WHERE account_ID = $1"
+	insertAccount     = "INSERT INTO pismo.accounts (account_ID, document_number) VALUES ($1, $2)"
 )
 
 type accountsRepository struct {
 	db *sqlx.DB
+
+	uuidHelper uuid.UuidHelper
 }
 
-func NewAccountsRepository(db *sqlx.DB) AccountsRepository {
-	return &accountsRepository{db: db}
+func NewAccountsRepository(databaseHelper database.DatabaseHelper, uuidHelper uuid.UuidHelper) AccountsRepository {
+	db := databaseHelper.GetConnection()
+
+	return &accountsRepository{db: db, uuidHelper: uuidHelper}
 }
 
 func (ref *accountsRepository) Get(id string) (entity.Account, error) {
@@ -32,7 +38,8 @@ func (ref *accountsRepository) Get(id string) (entity.Account, error) {
 
 func (ref *accountsRepository) Add(account AddAccount) error {
 
-	_, err := ref.db.NamedExec(insertAccount, account)
+	id := ref.uuidHelper.Generate()
+	_, err := ref.db.Exec(insertAccount, id, account.DocumentNumber)
 
 	if err != nil {
 		return err
