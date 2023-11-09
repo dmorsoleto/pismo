@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"dmorsoleto/internal/controller/handlers"
 	"dmorsoleto/internal/usecase/accounts"
 	"encoding/json"
 	"net/http"
@@ -24,10 +25,6 @@ func NewAccountsHandler(accountsUseCase accounts.AccountsUseCase) AccountsHandle
 	return &accountsHandler{
 		accountsUseCase: accountsUseCase,
 	}
-}
-
-type ResponseData struct {
-	Message string `json:"message"`
 }
 
 func (ref *accountsHandler) GetAccount(w http.ResponseWriter, r *http.Request) {
@@ -68,10 +65,10 @@ func (ref *accountsHandler) AddAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := ResponseAddccountData{
-		Sucess:    1,
-		Message:   "Account created with success",
-		AccountId: idInserted,
+	response := handlers.ResponseData{
+		Sucess:  1,
+		Message: "Account created with success",
+		Id:      idInserted,
 	}
 
 	responseJson, err := json.Marshal(response)

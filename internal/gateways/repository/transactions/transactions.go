@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	insertTransaction = "INSERT INTO pismo.transactions (transaction_id, account_id, operations_type_id, amount, event_date) VALUES ($1, $2)"
+	insertTransaction = "INSERT INTO pismo.transactions (transaction_id, account_id, operation_type_id, amount, event_date) VALUES ($1, $2, $3, $4, $5)"
 )
 
 type transactionsRepository struct {

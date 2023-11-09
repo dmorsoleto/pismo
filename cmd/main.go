@@ -6,9 +6,11 @@ import (
 	handlers_transactions "dmorsoleto/internal/controller/handlers/transactions"
 	"dmorsoleto/internal/entity"
 	accounts_repository "dmorsoleto/internal/gateways/repository/accounts"
+	transactions_repository "dmorsoleto/internal/gateways/repository/transactions"
 	"dmorsoleto/internal/helpers/database"
 	"dmorsoleto/internal/helpers/uuid"
 	"dmorsoleto/internal/usecase/accounts"
+	"dmorsoleto/internal/usecase/transactions"
 	"os"
 )
 
@@ -49,11 +51,13 @@ func main() {
 	uuidHelper := uuid.NewUuidHelper()
 
 	accountsRepo := accounts_repository.NewAccountsRepository(databaseHelper, uuidHelper)
+	transactionsRepo := transactions_repository.NewTransactionsRepository(databaseHelper, uuidHelper)
 
 	accountsUseCase := accounts.NewAccountsUseCase(accountsRepo, uuidHelper)
+	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, uuidHelper)
 
 	accountsHandler := handlers_accounts.NewAccountsHandler(accountsUseCase)
-	transactionsHandler := handlers_transactions.NewTransactionsHandler()
+	transactionsHandler := handlers_transactions.NewTransactionsHandler(transactionsUseCase)
 
 	http_controller.RunHttp(accountsHandler, transactionsHandler)
 }

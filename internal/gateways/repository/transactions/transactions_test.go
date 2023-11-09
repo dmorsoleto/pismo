@@ -15,7 +15,7 @@ import (
 const (
 	id = "1cc76376-43d5-4d26-bf15-2f2506bf5e20"
 
-	expectedInsertTransaction = `INSERT INTO pismo\.transactions \(transaction_id, account_id, operations_type_id, amount, event_date\) VALUES \(\$1, \$2\)`
+	expectedInsertTransaction = `INSERT INTO pismo\.transactions \(transaction_id, account_id, operation_type_id, amount, event_date\) VALUES \(\$1, \$2, \$3, \$4, \$5\)`
 )
 
 var (
