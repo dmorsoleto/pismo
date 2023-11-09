@@ -1,8 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS "pismo";
 GRANT ALL ON SCHEMA pismo to postgres;
 
-CREATE TYPE OperationsTypes AS ENUM ('CASH PURCHASE', 'INSTALLMENT PURCHASE', 'WITHDRAWAL', 'PAYMENT');
-
 CREATE TABLE IF NOT EXISTS pismo.accounts (
     "account_id" uuid NOT NULL,
     "document_number" varchar(255) NOT NULL,
