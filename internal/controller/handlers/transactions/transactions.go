@@ -35,7 +35,7 @@ func (ref *transactionsHandler) AddTransaction(w http.ResponseWriter, r *http.Re
 
 	idInserted, err := ref.transactionUseCase.Add(transaction)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
