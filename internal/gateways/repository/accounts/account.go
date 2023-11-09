@@ -6,6 +6,7 @@ import (
 	"dmorsoleto/internal/helpers/uuid"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 const (
@@ -25,6 +26,10 @@ func NewAccountsRepository(databaseHelper database.DatabaseHelper, uuidHelper uu
 	return &accountsRepository{db: db, uuidHelper: uuidHelper}
 }
 
+func NewAccountsRepositoryFromDB(db *sqlx.DB, uuidHelper uuid.UuidHelper) AccountsRepository {
+	return &accountsRepository{db: db, uuidHelper: uuidHelper}
+}
+
 func (ref *accountsRepository) Get(id string) (entity.Account, error) {
 	account := entity.Account{}
 	err := ref.db.Get(&account, selectAccountByID, id)
@@ -36,14 +41,15 @@ func (ref *accountsRepository) Get(id string) (entity.Account, error) {
 	return account, nil
 }
 
-func (ref *accountsRepository) Add(account AddAccount) error {
+func (ref *accountsRepository) Add(account AddAccount) (string, error) {
 
 	id := ref.uuidHelper.Generate()
 	_, err := ref.db.Exec(insertAccount, id, account.DocumentNumber)
 
 	if err != nil {
-		return err
+		logrus.Error("Error on insert account", err)
+		return "", err
 	}
 
-	return nil
+	return id, nil
 }
