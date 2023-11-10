@@ -6,8 +6,6 @@ import (
 	"dmorsoleto/internal/usecase/transactions"
 	"encoding/json"
 	"net/http"
-
-	"github.com/sirupsen/logrus"
 )
 
 type TransactionsHandler interface {
@@ -33,24 +31,24 @@ func (ref *transactionsHandler) AddTransaction(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	response := handlers.ResponseData{
+		Success: 1,
+		Message: "Transaction created with success",
+	}
+
 	idInserted, err := ref.transactionUseCase.Add(transaction)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		response.Success = 0
+		response.Message = err.Error()
+		responseJson, _ := json.Marshal(response)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(responseJson)
 		return
 	}
 
-	response := handlers.ResponseData{
-		Sucess:  1,
-		Message: "Transaction created with success",
-		Id:      idInserted,
-	}
+	response.Id = idInserted
 
-	responseJson, err := json.Marshal(response)
-	if err != nil {
-		logrus.Error("Something went wrong!", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	responseJson, _ := json.Marshal(response)
 
 	w.WriteHeader(http.StatusCreated)
 	w.Write(responseJson)

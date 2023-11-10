@@ -60,7 +60,7 @@ func (ref *TransactionsHandlerTestSuite) TestAddAccount_Success() {
 	ref.transactionsHandler.AddTransaction(w, req)
 
 	if w.Code != http.StatusCreated {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusCreated, w.Code)
 	}
 
 	ref.transactionsUseCase.AssertExpectations(ref.T())
@@ -87,8 +87,8 @@ func (ref *TransactionsHandlerTestSuite) TestAddAccount_UseCase_Error() {
 
 	ref.transactionsHandler.AddTransaction(w, req)
 
-	if w.Code != http.StatusInternalServerError {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+	if w.Code != http.StatusBadRequest {
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusBadRequest, w.Code)
 	}
 
 	ref.transactionsUseCase.AssertExpectations(ref.T())

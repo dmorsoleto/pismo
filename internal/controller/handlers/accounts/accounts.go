@@ -38,12 +38,7 @@ func (ref *accountsHandler) GetAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	jsonBytes, err := json.Marshal(account)
-	if err != nil {
-		logrus.Error("Something went wrong!", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	jsonBytes, _ := json.Marshal(account)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(jsonBytes)
@@ -58,25 +53,25 @@ func (ref *accountsHandler) AddAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	response := handlers.ResponseData{
+		Success: 1,
+		Message: "Account created with success",
+	}
+
 	idInserted, err := ref.accountsUseCase.Add(account)
 	if err != nil {
 		logrus.Error("Something went wrong!", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		response.Success = 0
+		response.Message = err.Error()
+		responseJson, _ := json.Marshal(response)
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write(responseJson)
 		return
 	}
 
-	response := handlers.ResponseData{
-		Sucess:  1,
-		Message: "Account created with success",
-		Id:      idInserted,
-	}
+	response.Id = idInserted
 
-	responseJson, err := json.Marshal(response)
-	if err != nil {
-		logrus.Error("Something went wrong!", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	responseJson, _ := json.Marshal(response)
 
 	w.WriteHeader(http.StatusCreated)
 	w.Write(responseJson)

@@ -57,7 +57,7 @@ func main() {
 	transactionsRepo := transactions_repository.NewTransactionsRepository(databaseHelper, uuidHelper)
 
 	accountsUseCase := accounts.NewAccountsUseCase(accountsRepo, uuidHelper)
-	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, uuidHelper)
+	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, accountsRepo, uuidHelper)
 
 	accountsHandler := handlers_accounts.NewAccountsHandler(accountsUseCase)
 	transactionsHandler := handlers_transactions.NewTransactionsHandler(transactionsUseCase)

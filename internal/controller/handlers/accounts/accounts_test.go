@@ -80,7 +80,7 @@ func (ref *AccountsHandlerTestSuite) TestGetAccount_UseCase_Error() {
 	ref.accountsHandler.GetAccount(w, req)
 
 	if w.Code != http.StatusInternalServerError {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusInternalServerError, w.Code)
 	}
 
 	ref.accountsUseCase.AssertExpectations(ref.T())
@@ -135,8 +135,8 @@ func (ref *AccountsHandlerTestSuite) TestAddAccount_UseCase_Error() {
 
 	ref.accountsHandler.AddAccount(w, req)
 
-	if w.Code != http.StatusInternalServerError {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+	if w.Code != http.StatusBadRequest {
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusBadRequest, w.Code)
 	}
 
 	ref.accountsUseCase.AssertExpectations(ref.T())
@@ -157,7 +157,7 @@ func (ref *AccountsHandlerTestSuite) TestAddAccount_Request_Error() {
 	ref.accountsHandler.AddAccount(w, req)
 
 	if w.Code != http.StatusBadRequest {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusBadRequest, w.Code)
 	}
 
 	ref.accountsUseCase.AssertExpectations(ref.T())

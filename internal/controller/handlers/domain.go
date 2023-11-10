@@ -1,7 +1,7 @@
 package handlers
 
 type ResponseData struct {
-	Sucess  int    `json:"sucess"`
+	Success int    `json:"success"`
 	Message string `json:"message"`
-	Id      string `json:"id"`
+	Id      string `json:"id,omitempty"`
 }
