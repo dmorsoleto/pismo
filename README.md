@@ -19,14 +19,14 @@ Only for this test project I added a file called .example.env in ./internal/test
 
 ### API
 
-Call routes with a basic auth, follow credentials:
-username: pismo
+Call routes with a basic auth, follow credentials:<br />
+username: pismo<br />
 pass: 12345678
 
 ##### Routes
 
 ###### Accounts
-(GET) - http://localhost:3000/accounts/:accountId
+(GET) - http://localhost:3000/accounts/:accountId<br />
 (POST) - http://localhost:3000/accounts
 
 ###### Transactions
