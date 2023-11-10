@@ -6,6 +6,7 @@ import (
 	handlers_transactions "dmorsoleto/internal/controller/handlers/transactions"
 	"dmorsoleto/internal/entity"
 	accounts_repository "dmorsoleto/internal/gateways/repository/accounts"
+	operationstype "dmorsoleto/internal/gateways/repository/operationsType"
 	transactions_repository "dmorsoleto/internal/gateways/repository/transactions"
 	"dmorsoleto/internal/helpers/database"
 	"dmorsoleto/internal/helpers/uuid"
@@ -55,9 +56,10 @@ func main() {
 
 	accountsRepo := accounts_repository.NewAccountsRepository(databaseHelper, uuidHelper)
 	transactionsRepo := transactions_repository.NewTransactionsRepository(databaseHelper, uuidHelper)
+	operationsTypeRepo := operationstype.NewOperationsTypeRepository(databaseHelper)
 
 	accountsUseCase := accounts.NewAccountsUseCase(accountsRepo, uuidHelper)
-	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, accountsRepo, uuidHelper)
+	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, accountsRepo, operationsTypeRepo, uuidHelper)
 
 	accountsHandler := handlers_accounts.NewAccountsHandler(accountsUseCase)
 	transactionsHandler := handlers_transactions.NewTransactionsHandler(transactionsUseCase)

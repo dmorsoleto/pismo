@@ -11,16 +11,16 @@ CREATE INDEX ON pismo.accounts ("account_id");
 
 CREATE TABLE IF NOT EXISTS pismo.operationsTypes (
     "operation_type_id" SERIAL,
-    "document_number" varchar(255) NOT NULL,
+    "description" varchar(255) NOT NULL,
     PRIMARY KEY ("operation_type_id")
 );
 
 CREATE INDEX ON pismo.operationsTypes ("operation_type_id");
 
-INSERT INTO pismo.operationsTypes ("document_number") VALUES ('CASH PURCHASE');
-INSERT INTO pismo.operationsTypes ("document_number") VALUES ('INSTALLMENT PURCHASE');
-INSERT INTO pismo.operationsTypes ("document_number") VALUES ('WITHDRAWAL');
-INSERT INTO pismo.operationsTypes ("document_number") VALUES ('PAYMENT');
+INSERT INTO pismo.operationsTypes ("description") VALUES ('CASH PURCHASE');
+INSERT INTO pismo.operationsTypes ("description") VALUES ('INSTALLMENT PURCHASE');
+INSERT INTO pismo.operationsTypes ("description") VALUES ('WITHDRAWAL');
+INSERT INTO pismo.operationsTypes ("description") VALUES ('PAYMENT');
 
 CREATE TABLE IF NOT EXISTS pismo.transactions (
     "transaction_id" uuid NOT NULL,

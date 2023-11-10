@@ -51,10 +51,10 @@ func (ref *OperationsTypeRepositoryTestSuite) SetupTest() {
 func (ref *OperationsTypeRepositoryTestSuite) TestGet_Success() {
 
 	ref.sqlMock.ExpectQuery(expextedSelectByOperationId).
-		WithArgs("1").
+		WithArgs(1).
 		WillReturnRows(newOperatioTypeRow())
 
-	account, err := ref.repository.Get("1")
+	account, err := ref.repository.Get(1)
 
 	ref.NoError(err)
 	ref.NotEmpty(account)
@@ -63,10 +63,10 @@ func (ref *OperationsTypeRepositoryTestSuite) TestGet_Success() {
 func (ref *OperationsTypeRepositoryTestSuite) TestGet_Error() {
 
 	ref.sqlMock.ExpectQuery(expextedSelectByOperationId).
-		WithArgs("1").
+		WithArgs(1).
 		WillReturnError(errFoo)
 
-	account, err := ref.repository.Get("1")
+	account, err := ref.repository.Get(1)
 
 	ref.Error(err)
 	ref.ErrorIs(err, errFoo)
@@ -76,5 +76,5 @@ func (ref *OperationsTypeRepositoryTestSuite) TestGet_Error() {
 func newOperatioTypeRow() *sqlmock.Rows {
 	operationsType := []string{"operation_type_id", "description"}
 
-	return sqlmock.NewRows(operationsType).AddRow("1", "PAYMENT")
+	return sqlmock.NewRows(operationsType).AddRow(1, "PAYMENT")
 }

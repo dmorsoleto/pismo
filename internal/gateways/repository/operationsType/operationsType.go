@@ -27,7 +27,7 @@ func NewOperationsTypeRepositoryFromDB(db *sqlx.DB) OperationsType {
 	return &operationsType{db: db}
 }
 
-func (ref *operationsType) Get(operationTypeId string) (entity.OperationsType, error) {
+func (ref *operationsType) Get(operationTypeId int) (entity.OperationsType, error) {
 	operationsType := entity.OperationsType{}
 
 	err := ref.db.Get(&operationsType, selectByOperationId, operationTypeId)
