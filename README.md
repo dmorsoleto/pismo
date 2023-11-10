@@ -13,5 +13,9 @@ To run project will be necessary the following libs:
 
 - Local api service up run ```make local-api```
 
-### PROJECT STRUCTUTE
+### API
+
+Call routes with a basic auth, follow credentials:
+username: pismo
+pass: 12345678
 

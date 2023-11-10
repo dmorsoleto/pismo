@@ -54,11 +54,11 @@ func (ref *AccountsHandlerTestSuite) TestGetAccount_Sucess() {
 
 	ref.accountsHandler.GetAccount(w, req)
 
-	if w.Code != http.StatusOK {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusOK, w.Code)
+	if w.Code != http.StatusCreated {
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusCreated, w.Code)
 	}
 
-	expected := `{"account_id":"cb1fd9fa-6d15-4a5d-8543-ae1ac1fbd563","document_number":"123456789"}`
+	expected := `{"success":1,"message":"Account found with success","data":{"account_id":"cb1fd9fa-6d15-4a5d-8543-ae1ac1fbd563","document_number":"123456789"}}`
 	if w.Body.String() != expected {
 		ref.T().Errorf("Expected body %s, got %s", expected, w.Body.String())
 	}
@@ -79,8 +79,8 @@ func (ref *AccountsHandlerTestSuite) TestGetAccount_UseCase_Error() {
 
 	ref.accountsHandler.GetAccount(w, req)
 
-	if w.Code != http.StatusInternalServerError {
-		ref.T().Errorf("Expected status code %d, got %d", http.StatusInternalServerError, w.Code)
+	if w.Code != http.StatusBadRequest {
+		ref.T().Errorf("Expected status code %d, got %d", http.StatusBadRequest, w.Code)
 	}
 
 	ref.accountsUseCase.AssertExpectations(ref.T())
