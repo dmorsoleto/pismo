@@ -14,6 +14,7 @@ ADD script /dist/script
 FROM alpine:latest
 
 RUN apk update && apk add --no-cache
+RUN apk add postgresql-client
 
 COPY --from=builder /dist /dist
 COPY ./bin ./dist
@@ -24,6 +25,7 @@ WORKDIR /dist
 
 ENV PORT=3000
 
-CMD ["/dist/main"]
+CMD until pg_isready --host=composepostgres; do sleep 1; done \
+    && "/dist/main"
 
 EXPOSE 3000
