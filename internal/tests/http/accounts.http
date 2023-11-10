@@ -1,0 +1,11 @@
+### Get Account
+GET http://localhost:3000/accounts/d2ba4e0d-b834-4c14-9bd6-3488fc619f5a
+Authorization: Basic pismo:12345678
+
+### Create Account
+
+POST http://localhost:3000/accounts
+Authorization: Basic pismo:12345678
+Content-Type: application/json
+
+{"document_number": "12345678900"}

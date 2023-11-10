@@ -1,0 +1,23 @@
+### Create Transaction
+
+POST http://localhost:3000/transactions
+Authorization: Basic pismo:12345678
+Content-Type: application/json
+
+{
+	"account_id": "d2ba4e0d-b834-4c14-9bd6-3488fc619f5a",
+	"operation_type_id": 1,
+	"amount": 432.45
+}
+
+### Create Transaction - Negative Number
+
+POST http://localhost:3000/transactions
+Authorization: Basic pismo:12345678
+Content-Type: application/json
+
+{
+	"account_id": "d2ba4e0d-b834-4c14-9bd6-3488fc619f5a",
+	"operation_type_id": 1,
+	"amount": -699.99
+}

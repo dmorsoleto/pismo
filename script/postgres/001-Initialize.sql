@@ -9,6 +9,8 @@ CREATE TABLE IF NOT EXISTS pismo.accounts (
 
 CREATE INDEX ON pismo.accounts ("account_id");
 
+INSERT INTO pismo.accounts ("account_id", "document_number") VALUES ('d2ba4e0d-b834-4c14-9bd6-3488fc619f5a', '12345678');
+
 CREATE TABLE IF NOT EXISTS pismo.operationsTypes (
     "operation_type_id" SERIAL,
     "description" varchar(255) NOT NULL,
