@@ -3,14 +3,17 @@ package main
 import (
 	http_controller "dmorsoleto/internal/controller"
 	handlers_accounts "dmorsoleto/internal/controller/handlers/accounts"
+	handlers_credit "dmorsoleto/internal/controller/handlers/availableCreditLimit"
 	handlers_transactions "dmorsoleto/internal/controller/handlers/transactions"
 	"dmorsoleto/internal/entity"
 	accounts_repository "dmorsoleto/internal/gateways/repository/accounts"
+	availablecreditlimit_repo "dmorsoleto/internal/gateways/repository/availableCreditLimit"
 	operationstype "dmorsoleto/internal/gateways/repository/operationsType"
 	transactions_repository "dmorsoleto/internal/gateways/repository/transactions"
 	"dmorsoleto/internal/helpers/database"
 	"dmorsoleto/internal/helpers/uuid"
 	"dmorsoleto/internal/usecase/accounts"
+	availablecreditlimit "dmorsoleto/internal/usecase/availableCreditLimit"
 	"dmorsoleto/internal/usecase/transactions"
 	"os"
 
@@ -57,12 +60,15 @@ func main() {
 	accountsRepo := accounts_repository.NewAccountsRepository(databaseHelper, uuidHelper)
 	transactionsRepo := transactions_repository.NewTransactionsRepository(databaseHelper, uuidHelper)
 	operationsTypeRepo := operationstype.NewOperationsTypeRepository(databaseHelper)
+	availableCreditLimitRepo := availablecreditlimit_repo.NewAvailableCreditLimit(databaseHelper, uuidHelper)
 
 	accountsUseCase := accounts.NewAccountsUseCase(accountsRepo, uuidHelper)
 	transactionsUseCase := transactions.NewTransactionsUseCase(transactionsRepo, accountsRepo, operationsTypeRepo, uuidHelper)
+	availableCreditLimitUseCase := availablecreditlimit.NewAvailableCreditLimitUseCase(availableCreditLimitRepo, accountsRepo, uuidHelper)
 
 	accountsHandler := handlers_accounts.NewAccountsHandler(accountsUseCase)
 	transactionsHandler := handlers_transactions.NewTransactionsHandler(transactionsUseCase)
+	availableCreditLimitHandler := handlers_credit.NewAvailableCreditLimit(availableCreditLimitUseCase)
 
-	http_controller.RunHttp(accountsHandler, transactionsHandler)
+	http_controller.RunHttp(accountsHandler, transactionsHandler, availableCreditLimitHandler)
 }
